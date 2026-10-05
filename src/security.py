@@ -9,6 +9,10 @@ def verify_signature(payload: bytes, signature: str, secret: str) -> bool:
     if not signature or not secret:
         return False
 
+    # Ashby sends the digest as "sha256=<hex>"; accept the bare hex form too.
+    if signature.startswith("sha256="):
+        signature = signature[len("sha256="):]
+
     expected = hmac.new(secret.encode("utf-8"), payload, hashlib.sha256).hexdigest()
 
     try:
