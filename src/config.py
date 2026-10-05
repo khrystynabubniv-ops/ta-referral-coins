@@ -19,6 +19,10 @@ ALERT_CHANNEL = os.environ.get("ALERT_CHANNEL", "")
 WORKER_INTERVAL_SEC = int(os.environ.get("WORKER_INTERVAL_SEC", "5"))
 WORKER_MAX_ATTEMPTS = int(os.environ.get("WORKER_MAX_ATTEMPTS", "3"))
 
+# Kill switch: until this is "true", webhooks are still queued but the worker
+# leaves them pending and never calls the Coin API.
+COIN_AWARDS_ENABLED = os.environ.get("COIN_AWARDS_ENABLED", "false").strip().lower() == "true"
+
 PORT = int(os.environ.get("PORT", "5000"))
 
 # Ashby webhook event types we react to.

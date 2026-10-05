@@ -42,6 +42,8 @@ def _process_row(row_id, payload, attempts) -> None:
 
 
 def run_once() -> None:
+    if not config.COIN_AWARDS_ENABLED:
+        return
     for row_id, payload, attempts in inbox.fetch_pending():
         _process_row(row_id, payload, attempts)
 
@@ -56,6 +58,8 @@ def _loop() -> None:
 
 
 def start() -> threading.Thread:
+    if not config.COIN_AWARDS_ENABLED:
+        logger.warning("COIN_AWARDS_ENABLED is not true: webhooks will be queued, no coins will be awarded")
     _stop_event.clear()
     thread = threading.Thread(target=_loop, name="coin-worker", daemon=True)
     thread.start()
